@@ -1,13 +1,6 @@
 import type { StationInterface } from './station';
 
-type ApiResponseItem = Record<string, unknown>;
-
-type ApiResponse2 = {
-  data: Record<string, unknown>;
-  response: { data: Record<string, unknown>; response: Response };
-};
-
-type ApiResponse = {
+export type ApiResponse = {
   data: Record<string, unknown>;
   response: Response;
 };
