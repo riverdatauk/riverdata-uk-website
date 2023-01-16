@@ -10,11 +10,12 @@ const stationStore = useStationStore();
 
 const route = useRoute();
 
-const station = ref<Station>();
+const station = ref<Station | null>(null);
+
+const stationResponse = ref<Record<string, unknown>>({});
 
 const stationId = computed<string>(() => {
   const id = route.params.id;
-  console.log('Setting', id, route);
   if (Array.isArray(id)) {
     return id[0];
   }
@@ -22,13 +23,19 @@ const stationId = computed<string>(() => {
 });
 
 onMounted(async () => {
-  station.value = await stationStore.fetchStation(stationId.value);
+  const [fetched, { data }] = await stationStore.fetchStation(stationId.value);
+  station.value = fetched;
+  stationResponse.value = data;
 });
 </script>
 
 <template>
   <div>Station id {{ stationId }}</div>
   <div v-if="station">
-    <div>{{ station.id }} {{ station.name }}</div>
+    <h1>
+      {{ station.name }} <small>({{ station.id }})</small>
+    </h1>
+    <pre>{{ station }}</pre>
   </div>
+  <pre>{{ stationResponse }}</pre>
 </template>
