@@ -1,8 +1,34 @@
-export interface StationInterface {
+import { apiRequest } from './flood-monitoring-api';
+
+import type { FloodMonitoringApiResponse } from './flood-monitoring-api';
+import { stripPath } from './utils';
+
+export type StationResponse = FloodMonitoringApiResponse<Station>;
+
+/**
+ * Fetch a station from the EA Flood Monitoring API.
+ *
+ * @param id The id of the station aka Station Reference.
+ * @returns The station plus some information.
+ */
+export const fetchStation = async (id: string): Promise<StationResponse> => {
+  const [maybeStation, response] = await apiRequest(`/id/stations/${id}`);
+  const stationDto = maybeStation as unknown as StationDto;
+  const responseId = stripPath(stationDto['@id']);
+  const station: Station = {
+    ...stationDto,
+    id: responseId,
+  };
+  return [station, response];
+};
+
+interface StationDto {
   '@id': string; // http://environment.data.gov.uk/flood-monitoring/id/stations/3400TH
-  label: string; // Kingston
-  stationReference: string; // "3400TH",
-  measures: MeasureInterface[];
+}
+
+export interface Station {
+  id: string;
+  label?: string; // "Kingston",
 }
 
 interface MeasureInterface {

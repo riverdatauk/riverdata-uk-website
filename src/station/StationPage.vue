@@ -22,18 +22,36 @@ const stationId = computed<string>(() => {
   return id;
 });
 
+const readings = ref();
+
 onMounted(async () => {
-  const [fetched, { data }] = await stationStore.fetchStation(stationId.value);
+  const [fetched, { data }] = await stationStore.getStation(stationId.value);
   station.value = fetched;
   stationResponse.value = data;
 });
+
+const getReadings = async () => {
+  // const criteria = { stationId: stationId.value };
+  const [fetched] = await stationStore.getStationReadings(stationId.value, {
+    since: new Date(Date.now() - 86400000).toISOString(),
+    ascending: true,
+  });
+  readings.value = fetched;
+};
 </script>
 
 <template>
   <div>Station id {{ stationId }}</div>
+  <div><button @click="getReadings">Get Readings</button></div>
+
+  <div v-if="readings">
+    <pre>{{ readings }}</pre>
+  </div>
+  <pre>{{ stationResponse }}</pre>
+
   <div v-if="station">
     <h1>
-      {{ station.name }} <small>({{ station.id }})</small>
+      {{ station.label }} <small>({{ station.id }})</small>
     </h1>
     <pre>{{ station }}</pre>
   </div>

@@ -1,12 +1,17 @@
-import { ref, computed } from 'vue';
+// import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { fetchStation, fetchStationReadings } from '@/api-client';
 
-import { fetchStation as apiFetchStation } from '@/flood-monitoring-api';
+import type {
+  Station,
+  StationResponse,
+  StationReadingsResponse,
+  FetchStationReadingsOptions,
+} from '@/api-client';
 
-import type { ApiResponse } from '@/flood-monitoring-api';
+export type { Station };
 
-type StationResponse = [item: Station | null, response: ApiResponse];
-
+/*
 export type Reading = [date: Date, value: number];
 
 export interface Measure {
@@ -14,28 +19,23 @@ export interface Measure {
   latestReading?: Reading;
   measures: Measure[];
 }
-
-export interface Station {
-  id: string;
-  name: string;
-  // measures: Measure[];
-}
+*/
 
 export const useStationStore = defineStore('station', () => {
-  const stations = ref<Record<string, Station>>({});
+  // const stations = ref<Record<string, Station>>({});
 
-  const getStation = computed((id: string): Station | undefined => {
-    return stations.value[id];
-  });
-
-  const fetchStation = async (id: string): Promise<StationResponse> => {
-    const [fetched, response] = await apiFetchStation(id);
-    const station: Station = {
-      id: fetched.stationReference,
-      name: fetched.label,
-    };
-    return [station, response];
+  const getStation = async (id: string): Promise<StationResponse> => {
+    const [fetched, response] = await fetchStation(id);
+    return [fetched, response];
   };
 
-  return { fetchStation };
+  const getStationReadings = async (
+    id: string,
+    options: FetchStationReadingsOptions = {}
+  ): Promise<StationReadingsResponse> => {
+    const [fetched, response] = await fetchStationReadings(id, options);
+    return [fetched, response];
+  };
+
+  return { getStation, getStationReadings };
 });
