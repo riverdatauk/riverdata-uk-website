@@ -3,7 +3,18 @@
  */
 
 export type Dto = Record<string, unknown>;
-export type DtoTransform = true | string | (() => string | null);
+
+export type DtoTransform =
+  | true // Copy from identical key.
+  | string // Copy from specified key.
+  | ((value: Dto) => Dto)
+  // Pass specified key to a function returning the value.
+  | [key: true | string, fn: (value: unknown) => unknown | null];
+
+export type DtoTransforms = Record<string, DtoTransform>;
+
+/** A single reading for a known measure. */
+export type MeasureReading = [timestamp: number, value: number];
 
 /**
  * Strip the path from a URL or similar path.
@@ -25,18 +36,15 @@ export const stripPath = (path: string, count = 0): string => {
  * @param dto A generic Data Transform Object.
  * @param transforms Transforms to apply.
  */
-export const transformDto = (
-  dto: Dto,
-  transforms: Record<string, DtoTransform>
-) => {
+export const transformDto = <T>(dto: Dto, transforms: DtoTransforms): T => {
   const transformed: Record<string, unknown> = {};
 
-  Object.entries(transforms).forEach(([key, transform]) => {
+  Object.entries(transforms).forEach(([destinationKey, transform]) => {
     if (transform === true) {
       // Use the value with the same key in the DTO, if it exists.
-      const value = dto[key];
+      const value = dto[destinationKey];
       if (value == null) return;
-      transformed[key] = value;
+      transformed[destinationKey] = value;
       return;
     }
 
@@ -44,16 +52,31 @@ export const transformDto = (
       // Use the value with the identified key in the DTO, if it exists.
       const value = dto[transform];
       if (value == null) return;
-      transformed[key] = value;
+      transformed[destinationKey] = value;
+      return;
+    }
+
+    if (Array.isArray(transform)) {
+      // Transform must be a function.
+      const [key, fn] = transform;
+      const sourceKey = key === true ? destinationKey : key;
+      const value = fn(dto[sourceKey]);
+      if (value == null) return;
+      transformed[destinationKey] = value;
       return;
     }
 
     // Transform must be a function.
-    const value = transform(dto);
-    if (value == null) return;
-    transformed[key] = value;
-    return;
+    const entries = transform(dto);
+    Object.assign(transformed, entries);
   });
 
-  return transformed;
+  return transformed as T;
+};
+
+export const transformMeasureReadingDto = ({
+  dateTime,
+  value,
+}: Dto): MeasureReading => {
+  return [new Date(dateTime as string).valueOf(), value as number];
 };

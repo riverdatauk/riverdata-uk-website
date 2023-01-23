@@ -2,14 +2,12 @@ import { apiRequest } from './flood-monitoring-api';
 import { stripPath } from './utils';
 
 import type { FloodMonitoringApiResponse } from './flood-monitoring-api';
+import type { MeasureReading } from './utils';
 
 export type StationReadings = Record<string, MeasureReading[]>;
 
 export type StationReadingsResponse =
   FloodMonitoringApiResponse<StationReadings>;
-
-/** A single reading for a known measure. */
-type MeasureReading = [timestamp: number, value: number];
 
 /**
  * Options to be provided to fetchStationData.

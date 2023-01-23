@@ -5,7 +5,9 @@ import { fetchStations } from '../station';
 describe.skip('API responses for stations', () => {
   it('all have unique id', async () => {
     // const wrapper = mount(StationPage, { props: { msg: 'Hello Vitest' } });
-    const [stations, { data }] = await fetchStations({ requestOptions: { fetch } });
+    const [stations, { data }] = await fetchStations({
+      requestOptions: { fetch },
+    });
     console.log('Received', stations, data.items);
     expect(stations.length).to.equal(2);
   });
