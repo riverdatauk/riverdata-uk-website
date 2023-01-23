@@ -27,14 +27,17 @@ export const keys = (): string[] => {
 };
 
 export const get = (key: string): string | null => {
-  return localStorage.getItem(`${prefix}${key}`);
+  const entry = localStorage.getItem(`${prefix}${key}`);
+  if (entry === null) return null;
+  return JSON.parse(entry);
 };
 
 export const set = (key: string, value: unknown = null): void => {
   if (value == null) {
-    return localStorage.removeItem(`${prefix}${key}`);
+    return unset(key);
   }
-  localStorage.setItem(`${prefix}${key}`, `${value}`);
+
+  localStorage.setItem(`${prefix}${key}`, JSON.stringify(value));
 };
 
 export const unset = (key: string): void => {

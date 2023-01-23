@@ -60,6 +60,8 @@ export const transformDto = <T>(dto: Dto, transforms: DtoTransforms): T => {
       // Transform must be a function.
       const [key, fn] = transform;
       const sourceKey = key === true ? destinationKey : key;
+      const sourceValue = dto[sourceKey];
+      if (sourceValue == null) return;
       const value = fn(dto[sourceKey]);
       if (value == null) return;
       transformed[destinationKey] = value;

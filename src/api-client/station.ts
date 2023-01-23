@@ -129,6 +129,7 @@ const stationDtoTransforms: DtoTransforms = {
  */
 export const fetchStation = async (id: string): Promise<StationResponse> => {
   const [data, response] = await apiRequest(`/id/stations/${id}`);
+  console.log('Fetched', { data })
   const station = transformDto<Station>(data as Dto, stationDtoTransforms);
   return [station, response];
 };

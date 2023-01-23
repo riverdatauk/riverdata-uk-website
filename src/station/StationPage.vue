@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useStationStore } from './station.store';
+import ReadingsChart from '@/components/ReadingsChart.vue';
 
 import type { Station } from './station.store';
 
@@ -56,4 +57,6 @@ const getReadings = async () => {
     <pre>{{ station }}</pre>
   </div>
   <pre>{{ stationResponse }}</pre>
+
+  <ReadingsChart v-if="readings" :multiple-readings="readings" />
 </template>
