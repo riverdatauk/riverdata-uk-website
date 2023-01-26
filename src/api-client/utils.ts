@@ -13,9 +13,6 @@ export type DtoTransform =
 
 export type DtoTransforms = Record<string, DtoTransform>;
 
-/** A single reading for a known measure. */
-export type MeasureReading = [timestamp: number, value: number];
-
 /**
  * Strip the path from a URL or similar path.
  *
@@ -74,13 +71,6 @@ export const transformDto = <T>(dto: Dto, transforms: DtoTransforms): T => {
   });
 
   return transformed as T;
-};
-
-export const transformMeasureReadingDto = ({
-  dateTime,
-  value,
-}: Dto): MeasureReading => {
-  return [new Date(dateTime as string).valueOf(), value as number];
 };
 
 export const toDateTimeString = (value: Date | number) => {

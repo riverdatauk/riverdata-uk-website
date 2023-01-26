@@ -130,5 +130,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-for="measureId in Object.keys(readings)" ref="chartRefs" :key="measureId"></div>
+  <div
+    v-for="measureId in Object.keys(readings)"
+    ref="chartRefs"
+    :key="measureId"
+  ></div>
 </template>

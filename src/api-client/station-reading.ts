@@ -2,7 +2,7 @@ import { apiRequest } from './flood-monitoring-api';
 import { stripPath } from './utils';
 
 import type { FloodMonitoringApiResponse } from './flood-monitoring-api';
-import type { MeasureReading } from './utils';
+import type { MeasureReading } from './reading';
 
 export type StationReadings = Record<string, MeasureReading[]>;
 
