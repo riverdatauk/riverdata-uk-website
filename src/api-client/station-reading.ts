@@ -30,7 +30,7 @@ interface StationReadingDto {
 }
 
 const defaults: FetchStationReadingsOptions = {
-  limit: 1000,
+  // limit: 1000,
 };
 
 /**

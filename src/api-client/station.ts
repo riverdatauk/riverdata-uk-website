@@ -1,3 +1,22 @@
+/**
+ * Refactoring required.
+ *
+ * fetchStation() - calls fetchStationDto and returns a Station (+ info).
+ *
+ * fetchStations() - calls fetchStationsDto and returns Stations (+ info).
+ * For a large dataset this could be expensive: options include
+ *
+ * fetchStationDto() - calls apiRequest and returns a StationDto (+ info).
+ * fetchStationDtos() - calls apiRequest and returns an array of StationDtos (+ info).
+ * A DTO is simply a type that the response data is cast to so should not add
+ * any weight to runtime:
+ * ```javascript
+ * return data as StationDto;
+ * return data as StationDto[];
+ * ```
+ * Allow access to these functions to bypass the (possibly opinionated) Station
+ * object.
+ */
 import { apiRequest } from './flood-monitoring-api';
 import { stripPath, transformDto } from './utils';
 import { transformStageScale } from './stage-scale';
@@ -129,7 +148,6 @@ const stationDtoTransforms: DtoTransforms = {
  */
 export const fetchStation = async (id: string): Promise<StationResponse> => {
   const [data, response] = await apiRequest(`/id/stations/${id}`);
-  console.log('Fetched', { data })
   const station = transformDto<Station>(data as Dto, stationDtoTransforms);
   return [station, response];
 };

@@ -8,7 +8,6 @@ describe.skip('API responses for stations', () => {
     const [stations, { data }] = await fetchStations({
       requestOptions: { fetch },
     });
-    console.log('Received', stations, data.items);
     expect(stations.length).to.equal(2);
   });
 });

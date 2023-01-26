@@ -33,8 +33,10 @@ onMounted(async () => {
 
 const getReadings = async () => {
   // const criteria = { stationId: stationId.value };
+  const since = Math.trunc(Date.now() / 86400000 - 7) * 86400000;
   const [fetched] = await stationStore.getStationReadings(stationId.value, {
-    since: new Date(Date.now() - 86400000).toISOString(),
+    since: new Date(since).toISOString(),
+    limit: 10000,
     ascending: true,
   });
   readings.value = fetched;
@@ -45,9 +47,6 @@ const getReadings = async () => {
   <div>Station id {{ stationId }}</div>
   <div><button @click="getReadings">Get Readings</button></div>
 
-  <div v-if="readings">
-    <pre>{{ readings }}</pre>
-  </div>
   <pre>{{ stationResponse }}</pre>
 
   <div v-if="station">
@@ -56,7 +55,6 @@ const getReadings = async () => {
     </h1>
     <pre>{{ station }}</pre>
   </div>
-  <pre>{{ stationResponse }}</pre>
 
-  <ReadingsChart v-if="readings" :multiple-readings="readings" />
+  <ReadingsChart v-if="readings" :readings="readings" />
 </template>

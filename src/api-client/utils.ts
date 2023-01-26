@@ -82,3 +82,18 @@ export const transformMeasureReadingDto = ({
 }: Dto): MeasureReading => {
   return [new Date(dateTime as string).valueOf(), value as number];
 };
+
+export const toDateTimeString = (value: Date | number) => {
+  return new Intl.DateTimeFormat('default', {
+    // weekday, year, month, day, hour, minute, second, fractionalSecondDigits
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    // dateStyle: 'full',
+    // timeStyle: 'short',
+    // timeZone: 'Australia/Sydney',
+  }).format(new Date(value));
+};
