@@ -27,6 +27,7 @@ import type { Station, StationDto } from './station';
 export type { Station, StationDto };
 
 export type StationResponse = FloodMonitoringApiResponse<Station>;
+export type StationDtoResponse = FloodMonitoringApiResponse<StationDto>;
 
 export type StationsResponse = FloodMonitoringApiResponse<
   Record<string, Station>
@@ -38,9 +39,22 @@ export type StationsResponse = FloodMonitoringApiResponse<
  * @param id The id of the station aka Station Reference.
  * @returns The station plus some information.
  */
-export const fetchStation = async (id: string): Promise<StationResponse> => {
+export const fetchStationDto = async (
+  id: string
+): Promise<StationDtoResponse> => {
   const [data, response] = await apiRequest(`/id/stations/${id}`);
-  const station = stationFromDto(data as StationDto);
+  return [data as StationDto, response];
+};
+
+/**
+ * Fetch a station from the EA Flood Monitoring API.
+ *
+ * @param id The id of the station aka Station Reference.
+ * @returns The station plus some information.
+ */
+export const fetchStation = async (id: string): Promise<StationResponse> => {
+  const [dto, response] = await fetchStationDto(id);
+  const station = stationFromDto(dto);
   return [station, response];
 };
 
