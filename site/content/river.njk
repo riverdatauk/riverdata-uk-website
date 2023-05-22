@@ -1,0 +1,22 @@
+---
+layout: layouts/home.njk
+
+pagination:
+  data: rivers
+  resolve: values
+  size: 1
+  alias: river
+  addAllPagesToCollections: true
+
+sitemap: false
+
+permalink: "river/{{ river.id }}/"
+---
+
+<h1>{{ river.name }}</h1>
+
+{% for station in river.stations %}
+  <h3>{{ station }}</h3>
+{% else %}
+  <div>This river has no stations</div>
+{% endfor %}

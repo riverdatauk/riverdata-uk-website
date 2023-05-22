@@ -1,1 +1,10 @@
+# .gitignore
+
 node_modules
+package-lock.json
+docs
+eadata
+
+site/data/*
+!site/data/metadata.js
+!site/data/stationsList.js

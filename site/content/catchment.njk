@@ -1,0 +1,28 @@
+---
+layout: layouts/home.njk
+
+pagination:
+  data: catchments
+  resolve: values
+  size: 1
+  alias: catchment
+  addAllPagesToCollections: true
+
+sitemap: false
+
+permalink: "catchment/{{ catchment.id }}/"
+---
+
+<h1>{{ catchment.name }}</h1>
+
+{% for riverId in catchment.rivers %}
+  <h3>{{ riverId }}</h3>
+{% else %}
+  <div>This catchment has no rivers</div>
+{% endfor %}
+
+{% for station in catchment.stations %}
+  <h3>{{ station }}</h3>
+{% else %}
+  <div>This catchment has no stations</div>
+{% endfor %}

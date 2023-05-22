@@ -1,0 +1,8 @@
+# .prettierignore
+
+docs
+
+eadata
+
+site/data/*
+!site/data/metadata.js
