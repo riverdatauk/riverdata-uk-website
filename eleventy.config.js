@@ -10,6 +10,7 @@ const { EleventyHtmlBasePlugin } = require('@11ty/eleventy');
 
 const pluginDrafts = require('./eleventy.config.drafts.js');
 const pluginImages = require('./eleventy.config.images.js');
+const pluginRiverdata = require('./eleventy.config.riverdata.js');
 
 module.exports = function (eleventyConfig) {
   // Copy the contents of the `public` folder to the output folder
@@ -28,6 +29,7 @@ module.exports = function (eleventyConfig) {
   // App plugins
   eleventyConfig.addPlugin(pluginDrafts);
   eleventyConfig.addPlugin(pluginImages);
+  eleventyConfig.addPlugin(pluginRiverdata);
 
   // Official plugins
   eleventyConfig.addPlugin(pluginRss);
