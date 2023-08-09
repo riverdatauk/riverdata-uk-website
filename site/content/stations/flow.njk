@@ -1,0 +1,12 @@
+---
+layout: layouts/page.njk
+
+sitemap:
+  priority: 0.6
+---
+
+Flow stations list
+
+{% for station in stationsList.stationsList %}
+<p>a{{ station.id }} {{ station.fmData.label }}</p>
+{% endfor %}
